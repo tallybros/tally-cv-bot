@@ -438,9 +438,11 @@ async function callClaude(userMessage) {
   return reply;
 }
 
-function scrollToBottom() {
+function scrollToMessage(el) {
+  if (!el) return;
   const msgs = document.getElementById('messages');
-  msgs.scrollTop = msgs.scrollHeight;
+  const offset = el.offsetTop - msgs.offsetTop - 16;
+  msgs.scrollTo({ top: offset, behavior: 'smooth' });
 }
 
 async function sendMessage() {
@@ -453,20 +455,20 @@ async function sendMessage() {
   isLoading = true;
   document.getElementById('sendBtn').disabled = true;
 
-  addMessage('user', text);
-  scrollToBottom();
-  showTyping();
-  scrollToBottom();
+  const userMsg = addMessage('user', text);
+  scrollToMessage(userMsg);
+  const typing = showTyping();
+  scrollToMessage(typing);
 
   try {
     const reply = await callClaude(text);
     removeTyping();
-    addMessage('tally', reply);
-    scrollToBottom();
+    const tallyMsg = addMessage('tally', reply);
+    scrollToMessage(tallyMsg);
   } catch (err) {
     removeTyping();
-    addMessage('tally', "Oops — something went wrong on my end. Please try again in a moment!");
-    scrollToBottom();
+    const errMsg = addMessage('tally', "Oops — something went wrong on my end. Please try again in a moment!");
+    scrollToMessage(errMsg);
     console.error(err);
   }
 
@@ -496,7 +498,8 @@ window.addEventListener('load', async () => {
   try {
     const reply = await callClaude("Hello, I just opened this CV bot. Please greet me and ask what I already know about Tally and what I'd like to explore.");
     removeTyping();
-    addMessage('tally', reply);
+    const greeting = addMessage('tally', reply);
+    scrollToMessage(greeting);
   } catch (err) {
     removeTyping();
     addMessage('tally', "Hi there! I'm Tally's CV bot — happy to walk you through my professional journey. What would you like to know about my experience and background?");
