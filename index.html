@@ -394,7 +394,10 @@ function addMessage(role, content) {
   div.appendChild(avatarDiv);
   div.appendChild(bubble);
   msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(() => {
+    msgs.scrollTop = msgs.scrollHeight;
+    div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, 50);
   return div;
 }
 
@@ -415,7 +418,9 @@ function showTyping() {
   wrap.appendChild(avatarDiv);
   wrap.appendChild(indicator);
   msgs.appendChild(wrap);
-  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(() => {
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 50);
   return wrap;
 }
 
