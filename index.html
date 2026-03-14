@@ -122,6 +122,7 @@
     flex-direction: column;
     gap: 20px;
     scroll-behavior: smooth;
+    position: relative;
   }
 
   .message {
@@ -441,9 +442,7 @@ async function callClaude(userMessage) {
 function scrollToMessage(el) {
   if (!el) return;
   const msgs = document.getElementById('messages');
-  const elTop = el.getBoundingClientRect().top;
-  const msgsTop = msgs.getBoundingClientRect().top;
-  msgs.scrollTop += (elTop - msgsTop) - 16;
+  msgs.scrollTop = el.offsetTop - 16;
 }
 
 async function sendMessage() {
