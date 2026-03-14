@@ -438,17 +438,7 @@ async function callClaude(userMessage) {
   return reply;
 }
 
-function scrollToMessage(el) {
-  if (!el) return;
-  const msgs = document.getElementById('messages');
-  let top = 0;
-  let node = el;
-  while (node && node !== msgs) {
-    top += node.offsetTop;
-    node = node.offsetParent;
-  }
-  msgs.scrollTop = top - 16;
-}
+
 
 async function sendMessage() {
   const input = document.getElementById('userInput');
@@ -461,7 +451,9 @@ async function sendMessage() {
   document.getElementById('sendBtn').disabled = true;
 
   const userMsg = addMessage('user', text);
-  scrollToMessage(userMsg);
+  setTimeout(() => {
+    userMsg.scrollIntoView(true);
+  }, 0);
   showTyping();
 
   try {
@@ -500,8 +492,7 @@ window.addEventListener('load', async () => {
   try {
     const reply = await callClaude("Hello, I just opened this CV bot. Please greet me and ask what I already know about Tally and what I'd like to explore.");
     removeTyping();
-    const greeting = addMessage('tally', reply);
-    scrollToMessage(greeting);
+    addMessage('tally', reply);
   } catch (err) {
     removeTyping();
     addMessage('tally', "Hi there! I'm Tally's CV bot — happy to walk you through my professional journey. What would you like to know about my experience and background?");
