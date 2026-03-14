@@ -121,7 +121,6 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    scroll-behavior: smooth;
     position: relative;
   }
 
@@ -442,7 +441,13 @@ async function callClaude(userMessage) {
 function scrollToMessage(el) {
   if (!el) return;
   const msgs = document.getElementById('messages');
-  msgs.scrollTop = el.offsetTop - 16;
+  let top = 0;
+  let node = el;
+  while (node && node !== msgs) {
+    top += node.offsetTop;
+    node = node.offsetParent;
+  }
+  msgs.scrollTop = top - 16;
 }
 
 async function sendMessage() {
