@@ -441,8 +441,9 @@ async function callClaude(userMessage) {
 function scrollToMessage(el) {
   if (!el) return;
   const msgs = document.getElementById('messages');
-  const offset = el.offsetTop - msgs.offsetTop - 16;
-  msgs.scrollTo({ top: offset, behavior: 'smooth' });
+  const elTop = el.getBoundingClientRect().top;
+  const msgsTop = msgs.getBoundingClientRect().top;
+  msgs.scrollTop += (elTop - msgsTop) - 16;
 }
 
 async function sendMessage() {
@@ -457,18 +458,15 @@ async function sendMessage() {
 
   const userMsg = addMessage('user', text);
   scrollToMessage(userMsg);
-  const typing = showTyping();
-  scrollToMessage(typing);
+  showTyping();
 
   try {
     const reply = await callClaude(text);
     removeTyping();
-    const tallyMsg = addMessage('tally', reply);
-    scrollToMessage(tallyMsg);
+    addMessage('tally', reply);
   } catch (err) {
     removeTyping();
-    const errMsg = addMessage('tally', "Oops — something went wrong on my end. Please try again in a moment!");
-    scrollToMessage(errMsg);
+    addMessage('tally', "Oops — something went wrong on my end. Please try again in a moment!");
     console.error(err);
   }
 
