@@ -203,33 +203,6 @@
     color: rgba(255,255,255,1);
   }
 
-  /* SUGGESTIONS */
-  .suggestions {
-    padding: 0 24px 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .suggestion-btn {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 7px 14px;
-    font-size: 13px;
-    color: var(--text-mid);
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s;
-    font-weight: 400;
-  }
-
-  .suggestion-btn:hover {
-    background: var(--accent-light);
-    border-color: rgba(232,118,74,0.3);
-    color: var(--accent);
-  }
-
   /* INPUT */
   .input-area {
     padding: 14px 20px 18px;
@@ -332,7 +305,6 @@
   @media (max-width: 600px) {
     .messages { padding: 20px 16px; }
     .input-area { padding: 12px 14px 16px; }
-    .suggestions { padding: 0 16px 12px; }
     .header { padding: 16px 18px 14px; }
     .header-badge { display: none; }
   }
@@ -355,15 +327,7 @@
   </div>
 
   <div class="messages" id="messages"></div>
-
-  <div class="suggestions" id="suggestions">
-    <button class="suggestion-btn" onclick="sendSuggestion(this)">What's your product background?</button>
-    <button class="suggestion-btn" onclick="sendSuggestion(this)">Tell me about your fintech experience</button>
-    <button class="suggestion-btn" onclick="sendSuggestion(this)">What are your key skills?</button>
-    <button class="suggestion-btn" onclick="sendSuggestion(this)">Why conversation design?</button>
-  </div>
-
-  <div class="input-area">
+<div class="input-area">
     <div class="input-row">
       <textarea id="userInput" placeholder="Ask me about my experience, skills, or background…" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Send">
@@ -481,7 +445,6 @@ async function sendMessage() {
   const text = input.value.trim();
   if (!text || isLoading) return;
 
-  document.getElementById('suggestions').style.display = 'none';
 
   input.value = '';
   input.style.height = 'auto';
@@ -497,7 +460,7 @@ async function sendMessage() {
     addMessage('tally', reply);
   } catch (err) {
     removeTyping();
-    addMessage('tally', "Error: " + err.message);
+    addMessage('tally', "Oops — something went wrong on my end. Please try again in a moment!");
     console.error(err);
   }
 
@@ -506,10 +469,6 @@ async function sendMessage() {
   input.focus();
 }
 
-function sendSuggestion(btn) {
-  document.getElementById('userInput').value = btn.textContent;
-  sendMessage();
-}
 
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
