@@ -118,20 +118,29 @@ exports.handler = async function (event) {
   if (!apiKey) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'ANTHROPIC_API_KEY environment variable is not set in Netlify' }),
+      body: JSON.stringify({ error: 'ANTHROPIC_API_KEY is not set' }),
     };
   }
 
+  let messages;
   try {
-    const { messages } = JSON.parse(event.body);
+    messages = JSON.parse(event.body).messages;
+  } catch(e) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON body: ' + e.message }) };
+  }
 
-    const payload = JSON.stringify({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 1000,
-      system: SYSTEM_PROMPT,
-      messages: messages,
-    });
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'messages array is missing or empty' }) };
+  }
 
+  const payload = JSON.stringify({
+    model: 'claude-3-5-sonnet-20241022',
+    max_tokens: 1000,
+    system: SYSTEM_PROMPT,
+    messages: messages,
+  });
+
+  try {
     const result = await new Promise((resolve, reject) => {
       const req = https.request(
         {
@@ -156,6 +165,7 @@ exports.handler = async function (event) {
       req.end();
     });
 
+    // Always return the full Anthropic response so we can see errors
     return {
       statusCode: result.status,
       headers: { 'Content-Type': 'application/json' },

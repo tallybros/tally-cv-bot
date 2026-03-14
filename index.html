@@ -467,10 +467,10 @@ async function callClaude(userMessage) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ messages: conversationHistory })
   });
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
-  }
   const data = await response.json();
+  if (!response.ok) {
+    throw new Error(`API error ${response.status}: ${JSON.stringify(data)}`);
+  }
   const reply = data.content[0].text;
   conversationHistory.push({ role: 'assistant', content: reply });
   return reply;
