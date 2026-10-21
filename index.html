@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Talk to Tally's CV</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
     --navy: #1a2340;
     --navy-mid: #2d3a5e;
-    --accent: #e8764a;
-    --accent-light: #fdf0ea;
+    --accent: #7C3AED;
+    --accent-light: #F3E8FF;
     --text: #1a2340;
     --text-mid: #5a6480;
     --text-light: #9aa0b5;
@@ -27,7 +27,7 @@
   }
 
   body {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'Oxanium', system-ui, sans-serif;
     background: var(--surface-2);
     min-height: 100vh;
     display: flex;
@@ -80,15 +80,15 @@
     right: 1px;
     width: 12px;
     height: 12px;
-    background: #3ec97e;
+    background: #17D9DA;
     border-radius: 50%;
     border: 2px solid var(--surface);
   }
 
   .header-info h1 {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Orbitron', sans-serif;
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 700;
     color: var(--navy);
     line-height: 1.2;
   }
@@ -109,7 +109,7 @@
     padding: 4px 10px;
     border-radius: 20px;
     letter-spacing: 0.02em;
-    border: 1px solid rgba(232,118,74,0.2);
+    border: 1px solid rgba(124,58,237,0.2);
     flex-shrink: 0;
   }
 
@@ -248,7 +248,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: var(--navy);
+    background: var(--accent);
     border: none;
     cursor: pointer;
     display: flex;
@@ -259,7 +259,7 @@
     color: white;
   }
 
-  .send-btn:hover { background: var(--navy-mid); transform: scale(1.05); }
+  .send-btn:hover { background: #6D28D9; transform: scale(1.05); }
   .send-btn:active { transform: scale(0.97); }
   .send-btn:disabled { background: var(--border); cursor: default; transform: none; }
 
@@ -333,7 +333,8 @@
         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 8L1.5 2l2 5.5L1.5 13l13-5zm-9.9 0.8L3.3 5.1l7.6 2.9-7.6 2.9 1.3-2.1z"/></svg>
       </button>
     </div>
-    <p class="input-footer">Powered by Claude · This bot speaks on behalf of Tally Brostowsky's professional experience</p>
+    <p class="input-footer">Created with Love &amp; AI by <a href="https://tall-e.ai" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Tall-e</a> &copy; <span id="footer-year"></span></p>
+    <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
   </div>
 
 </div>
@@ -489,7 +490,7 @@ window.addEventListener('load', async () => {
   const typing = showTyping();
 
   try {
-    const reply = await callClaude("Hello, I just opened this CV bot. Please greet me and ask what I already know about Tally and what I'd like to explore.");
+    const reply = await callClaude("[The user just opened the chat. Start the conversation in your own voice.]");
     removeTyping();
     addMessage('tally', reply);
   } catch (err) {
